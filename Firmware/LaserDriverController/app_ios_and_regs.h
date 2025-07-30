@@ -12,9 +12,9 @@ void init_ios(void);
 // ON_OFF_KEY             Description: Flag Laser ON or OFF
 // SWITCH_5V              Description: Switch intput
 
-//#define read_ON_OFF_KEY read_io(PORTH, 0)       // ON_OFF_KEY
+#define read_ON_OFF_KEY read_io(PORTH, 0)       // ON_OFF_KEY
 #define read_SWITCH_5V read_io(PORTE, 0)        // SWITCH_5V
-#define read_ON_OFF_KEY read_io(PORTA, 0)       // ON_OFF_KEY
+
 /************************************************************************/
 /* Definition of output pins                                            */
 /************************************************************************/

@@ -220,8 +220,8 @@ void core_callback_reset_registers(void)
 {
 	/* Initialize registers */
 
-	app_regs.REG_SPAD_SWITCH = 0;
-	app_regs.REG_LASER_STATE = 0;       
+	app_regs.REG_SPAD_SWITCH = read_SWITCH_5V;
+	app_regs.REG_LASER_STATE = read_ON_OFF_KEY;       
 	app_regs.REG_RESERVED0 = 0;
 	app_regs.REG_RESERVED1 = 0;            
 	app_regs.REG_RESERVED2 = 0;
@@ -294,7 +294,8 @@ void core_callback_t_500us(void) {
 
 	//----------------------------BNC SIGNAL 1-----------------------------
 	//counts delay time before start signal
-	if (pulse_countdown.tail_bnc0  > 0){	
+	if (app_regs.REG_BNCS_STATE & B_BNC0){
+	if ((pulse_countdown.tail_bnc0)  > 0 && (app_regs.REG_BNC0_ON != 0)){	
 			if (--pulse_countdown.tail_bnc0 == 0){
 				set_BNC_SIG1_O;
 			}
@@ -333,11 +334,13 @@ void core_callback_t_500us(void) {
 			}		
 		}
 	}
+	}
 
 	//----------------------------BNC SIGNAL 2-----------------------------
 	//counts delay time before start signal
-	if (pulse_countdown.tail_bnc1  > 0){
-		if (--pulse_countdown.tail_bnc1 == 0){
+	if (app_regs.REG_BNCS_STATE & B_BNC1){
+	if ((pulse_countdown.tail_bnc1  > 0) && (app_regs.REG_BNC1_ON != 0)){
+		if (--pulse_countdown.tail_bnc1 == 0 ){
 			set_BNC_SIG2_O;
 		}
 	}
@@ -375,14 +378,145 @@ void core_callback_t_500us(void) {
 			}
 		}
 	}
+	}
+
+	//----------------------------SIGNAL A-----------------------------
+	//counts delay time before start signal
+	if (app_regs.REG_SIGNAL_STATE & B_SIGNAL_A){
+	if ((pulse_countdown.tail_signal_a  > 0) && (app_regs.REG_SIGNAL_A_ON != 0)){
+		if (--pulse_countdown.tail_signal_a == 0 ){
+			set_SIGNAL_A_O;
+		}
+	}
+	else{
+		// signalA
+		if (pulse_countdown.t_signal_a  > 0){
+			//--pulse_countdown.tail_bnc1;
+			--pulse_countdown.period_signal_a;
+			if (--pulse_countdown.t_signal_a == 0){
+				//if(pulse_countdown.tail_bnc1 == 0){ //ends pulse, goes to ON part of signal or stops the signal
+				if(pulse_countdown.period_signal_a == 0){ //ends pulse, goes to ON part of signal or stops the signal
+					if( --pulse_countdown.count_pulses_signal_a > 1  ){
+						
+						//pulse_countdown.tail_bnc1 = s_bnc_1.tail_ms ; //set the tail value
+						pulse_countdown.period_signal_a = s_signal_a.on_ms + s_signal_a.off_ms   ; //set the period value
+						pulse_countdown.t_signal_a = s_signal_a.on_ms ;
+						set_SIGNAL_A_O;
+					}
+					else if (pulse_countdown.count_pulses_signal_a == 1){ //end
+						clr_SIGNAL_A_O;
+						app_regs.REG_SIGNAL_STATE &= ~B_SIGNAL_A; //stops signal
+					}
+					else{ //infinite pulses
+						//pulse_countdown.tail_bnc1 = s_bnc_1.tail_ms; //set the tail value
+						pulse_countdown.period_signal_a = s_signal_a.on_ms + s_signal_a.off_ms; //set the period value
+						pulse_countdown.t_signal_a = s_signal_a.on_ms ;
+						pulse_countdown.count_pulses_signal_a = 1;
+						set_SIGNAL_A_O;
+					}
+				}
+				else{ //goes to off part of signal
+					pulse_countdown.t_signal_a =  s_signal_a.off_ms;
+					clr_SIGNAL_A_O;
+				}
+			}
+		}
+	}
 	
-
-
-
-
+	}
+	//----------------------------SIGNAL B-----------------------------
+	//counts delay time before start signal
+	if (app_regs.REG_SIGNAL_STATE & B_SIGNAL_B){
+	if ((pulse_countdown.tail_signal_b  > 0) && (app_regs.REG_SIGNAL_B_ON != 0)){
+		if (--pulse_countdown.tail_signal_b == 0 ){
+			set_SIGNAL_B_O;
+		}
+	}
+	else{
+		// signalA
+		if (pulse_countdown.t_signal_b  > 0){
+			//--pulse_countdown.tail_bnc1;
+			--pulse_countdown.period_signal_b;
+			if (--pulse_countdown.t_signal_b == 0){
+				//if(pulse_countdown.tail_bnc1 == 0){ //ends pulse, goes to ON part of signal or stops the signal
+				if(pulse_countdown.period_signal_b == 0){ //ends pulse, goes to ON part of signal or stops the signal
+					if( --pulse_countdown.count_pulses_signal_b > 1  ){
+						
+						//pulse_countdown.tail_bnc1 = s_bnc_1.tail_ms ; //set the tail value
+						pulse_countdown.period_signal_b = s_signal_b.on_ms + s_signal_b.off_ms   ; //set the period value
+						pulse_countdown.t_signal_b = s_signal_b.on_ms ;
+						set_SIGNAL_B_O;
+					}
+					else if (pulse_countdown.count_pulses_signal_b == 1){ //end
+						clr_SIGNAL_B_O;
+						app_regs.REG_SIGNAL_STATE &= ~B_SIGNAL_B; //stops signal
+					}
+					else{ //infinite pulses
+						//pulse_countdown.tail_bnc1 = s_bnc_1.tail_ms; //set the tail value
+						pulse_countdown.period_signal_b = s_signal_b.on_ms + s_signal_b.off_ms; //set the period value
+						pulse_countdown.t_signal_b = s_signal_b.on_ms ;
+						pulse_countdown.count_pulses_signal_b = 1;
+						set_SIGNAL_B_O;
+					}
+				}
+				else{ //goes to off part of signal
+					pulse_countdown.t_signal_b =  s_signal_b.off_ms;
+					clr_SIGNAL_B_O;
+				}
+			}
+		}
+	}
+	}
 			
 }
-void core_callback_t_1ms(void) {}
+void core_callback_t_1ms(void) {
+	
+	//spad switch event from interrupt
+	if (app_regs.REG_RESERVED1-- == 0){
+		uint8_t reg_spad_switch = app_regs.REG_SPAD_SWITCH;
+		if(read_SWITCH_5V){
+			if(app_regs.REG_EVNT_ENABLE &  B_EVT_SPAD_SWITCH ){
+				app_regs.REG_SPAD_SWITCH = 1;
+				set_MCU_TO_RELAY;
+				if(reg_spad_switch  != app_regs.REG_SPAD_SWITCH){
+					core_func_send_event(ADD_REG_SPAD_SWITCH, true);
+				}
+			}
+		}
+		else{
+			if(app_regs.REG_EVNT_ENABLE & B_EVT_SPAD_SWITCH ){
+				app_regs.REG_SPAD_SWITCH = 0;
+				clr_MCU_TO_RELAY;
+				if(reg_spad_switch != app_regs.REG_SPAD_SWITCH){
+					core_func_send_event(ADD_REG_SPAD_SWITCH, true);
+				}
+			}
+		}
+		
+	}
+	
+	//key switch event from interrupt
+	if (app_regs.REG_RESERVED2-- == 0){
+		uint8_t reg_laser_state = app_regs.REG_LASER_STATE;
+		if(read_ON_OFF_KEY){
+			if(app_regs.REG_EVNT_ENABLE & B_EVT_LASER_STATE ){
+				app_regs.REG_LASER_STATE = 1;
+				if(reg_laser_state != app_regs.REG_LASER_STATE){
+					core_func_send_event(ADD_REG_LASER_STATE, true);
+				}
+			}
+		}
+		else{
+			if(app_regs.REG_EVNT_ENABLE & B_EVT_LASER_STATE ){
+				app_regs.REG_LASER_STATE = 0;
+				if(reg_laser_state != app_regs.REG_LASER_STATE){
+					core_func_send_event(ADD_REG_LASER_STATE, true);
+				}
+			}
+		}
+	}
+	
+}
 
 
 

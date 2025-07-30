@@ -7,14 +7,13 @@
 /************************************************************************/
 void init_ios(void)
 {	/* Configure input pins */
-	//io_pin2in(&PORTH, 0, PULL_IO_UP , SENSE_IO_EDGES_BOTH);                         // ON_OFF_KEY
+	io_pin2in(&PORTH, 0, PULL_IO_DOWN , SENSE_IO_EDGES_BOTH);                         // ON_OFF_KEY
 	io_pin2in(&PORTE, 0, PULL_IO_DOWN, SENSE_IO_EDGES_BOTH);             // SWITCH_5V
-	io_pin2in(&PORTA, 0, PULL_IO_DOWN , SENSE_IO_EDGES_BOTH);                         // ON_OFF_KEY
+
 
 	/* Configure input interrupts */
-	//io_set_int(&PORTH, INT_LEVEL_LOW, 0, (1<<0), false);                 // ON_OFF_KEY
+	io_set_int(&PORTH, INT_LEVEL_LOW, 0, (1<<0), false);                 // ON_OFF_KEY
 	io_set_int(&PORTE, INT_LEVEL_LOW, 0, (1<<0), false);                 // SWITCH_5V
-	io_set_int(&PORTA, INT_LEVEL_LOW, 0, (1<<0), false);                 // ON_OFF_KEY
 
 
 	/* Configure output pins */

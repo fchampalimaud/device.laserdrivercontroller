@@ -29,10 +29,10 @@ extern AppRegs app_regs;
 /************************************************************************/
 /* ON_OFF_KEY                                                           */
 /************************************************************************/
-ISR(PORTA_INT0_vect, ISR_NAKED)
+ISR(PORTH_INT0_vect, ISR_NAKED)
 {
-	uint8_t reg_laser_state = app_regs.REG_LASER_STATE;
-	if(!read_ON_OFF_KEY){
+	/*uint8_t reg_laser_state = app_regs.REG_LASER_STATE;
+	if(read_ON_OFF_KEY){
 		if(app_regs.REG_EVNT_ENABLE & B_EVT_LASER_STATE ){
 			app_regs.REG_LASER_STATE = 1;
 			if(reg_laser_state != app_regs.REG_LASER_STATE){
@@ -47,7 +47,10 @@ ISR(PORTA_INT0_vect, ISR_NAKED)
 				core_func_send_event(ADD_REG_LASER_STATE, true);
 			}
 		}
-	}
+	}*/
+	
+	
+	app_regs.REG_RESERVED2 = 1;
 
 	reti();
 }
@@ -58,9 +61,12 @@ ISR(PORTA_INT0_vect, ISR_NAKED)
 //ONLY IF PHYSICAL SWITCH IS CONNECTED
 ISR(PORTE_INT0_vect, ISR_NAKED)
 {
-	uint8_t reg_spad_switch = app_regs.REG_SPAD_SWITCH;
-	app_regs.REG_RESERVED0 = read_SWITCH_5V;
-	if(!read_SWITCH_5V){
+	app_regs.REG_RESERVED1 = 1; 
+	
+	
+	/*uint8_t reg_spad_switch = app_regs.REG_SPAD_SWITCH;
+
+	if(read_SWITCH_5V){
 		if(app_regs.REG_EVNT_ENABLE &  B_EVT_SPAD_SWITCH ){
 			app_regs.REG_SPAD_SWITCH = 1;
 			set_MCU_TO_RELAY;
@@ -77,7 +83,7 @@ ISR(PORTE_INT0_vect, ISR_NAKED)
 				core_func_send_event(ADD_REG_SPAD_SWITCH, true);
 			}
 		}
-	}
+	}*/
 
 	reti();
 }

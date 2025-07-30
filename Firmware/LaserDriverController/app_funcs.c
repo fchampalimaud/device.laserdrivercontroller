@@ -359,7 +359,7 @@ bool app_write_REG_BNCS_STATE(void *a)
 {
 	uint8_t reg = *((uint8_t*)a);
 
-
+//BNC 0
 	if (reg & B_BNC0){
 		start_signal(&s_bnc_0,  app_regs.REG_BNC0_ON,app_regs.REG_BNC0_PULSES, app_regs.REG_BNC0_OFF, app_regs.REG_BNC0_TAIL);
 		pulse_countdown.tail_bnc0 = app_regs.REG_BNC0_TAIL + 1;			// discard first count (callback reasons)
@@ -367,13 +367,13 @@ bool app_write_REG_BNCS_STATE(void *a)
 		pulse_countdown.t_bnc0 = app_regs.REG_BNC0_ON ;				// discard first count (callback reasons)
 		pulse_countdown.count_pulses_bnc0 = app_regs.REG_BNC0_PULSES + 1; // if 0 -> infinite pulses		
 		
-		if(pulse_countdown.tail_bnc0 == 1)
+		if((pulse_countdown.tail_bnc0 == 1) && (app_regs.REG_BNC0_ON != 0))
 			set_BNC_SIG1_O;
 			
 	} 
 	else clr_BNC_SIG1_O;
 	
-	
+//BNC1	
 	if (reg & B_BNC1){
 		start_signal(&s_bnc_1,  app_regs.REG_BNC1_ON,app_regs.REG_BNC1_PULSES, app_regs.REG_BNC1_OFF, app_regs.REG_BNC1_TAIL);
 		pulse_countdown.tail_bnc1 = app_regs.REG_BNC1_TAIL + 1;			// discard first count (callback reasons)
@@ -381,10 +381,14 @@ bool app_write_REG_BNCS_STATE(void *a)
 		pulse_countdown.t_bnc1 = app_regs.REG_BNC1_ON ;				// discard first count (callback reasons)
 		pulse_countdown.count_pulses_bnc1 = app_regs.REG_BNC1_PULSES + 1; // if 0 -> infinite pulses
 		
-		if(pulse_countdown.tail_bnc1 == 1)
+		if((pulse_countdown.tail_bnc1 == 1) && (app_regs.REG_BNC1_ON != 0))
 			set_BNC_SIG2_O;
 	}
 	else clr_BNC_SIG2_O;
+
+
+
+
 
 
 
@@ -405,6 +409,36 @@ void app_read_REG_SIGNAL_STATE(void)
 bool app_write_REG_SIGNAL_STATE(void *a)
 {
 	uint8_t reg = *((uint8_t*)a);
+	
+	
+//SIGNAL A
+
+	if (reg & B_SIGNAL_A){
+		start_signal(&s_signal_a,  app_regs.REG_SIGNAL_A_ON,app_regs.REG_SIGNAL_A_PULSES, app_regs.REG_SIGNAL_A_OFF, app_regs.REG_SIGNAL_A_TAIL);
+		pulse_countdown.tail_signal_a= app_regs.REG_SIGNAL_A_TAIL + 1;			// discard first count (callback reasons)
+		pulse_countdown.period_signal_a =app_regs.REG_SIGNAL_A_ON + app_regs.REG_SIGNAL_A_OFF  ;			// discard first count (callback reasons)
+		pulse_countdown.t_signal_a = app_regs.REG_SIGNAL_A_ON ;				// discard first count (callback reasons)
+		pulse_countdown.count_pulses_signal_a = app_regs.REG_SIGNAL_A_PULSES + 1; // if 0 -> infinite pulses
+	
+		if((pulse_countdown.tail_signal_a == 1) && (app_regs.REG_SIGNAL_A_ON != 0))
+		set_SIGNAL_A_O;
+	}
+	else clr_SIGNAL_A_O;
+
+
+//SIGNAL B
+
+	if (reg & B_SIGNAL_B){
+		start_signal(&s_signal_b,  app_regs.REG_SIGNAL_B_ON,app_regs.REG_SIGNAL_B_PULSES, app_regs.REG_SIGNAL_B_OFF, app_regs.REG_SIGNAL_B_TAIL);
+		pulse_countdown.tail_signal_b= app_regs.REG_SIGNAL_B_TAIL + 1;			// discard first count (callback reasons)
+		pulse_countdown.period_signal_b =app_regs.REG_SIGNAL_B_ON + app_regs.REG_SIGNAL_B_OFF  ;			// discard first count (callback reasons)
+		pulse_countdown.t_signal_b = app_regs.REG_SIGNAL_B_ON ;				// discard first count (callback reasons)
+		pulse_countdown.count_pulses_signal_b = app_regs.REG_SIGNAL_B_PULSES + 1; // if 0 -> infinite pulses
+		
+		if((pulse_countdown.tail_signal_b == 1) && (app_regs.REG_SIGNAL_B_ON != 0))
+		set_SIGNAL_B_O;
+	}
+	else clr_SIGNAL_B_O;
 
 	app_regs.REG_SIGNAL_STATE = reg;
 	return true;
