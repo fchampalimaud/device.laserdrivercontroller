@@ -15,7 +15,6 @@ void init_ios(void)
 	io_set_int(&PORTH, INT_LEVEL_LOW, 0, (1<<0), false);                 // ON_OFF_KEY
 	io_set_int(&PORTE, INT_LEVEL_LOW, 0, (1<<0), false);                 // SWITCH_5V
 
-
 	/* Configure output pins */
 	io_pin2out(&PORTC, 2, OUT_IO_DIGITAL, IN_EN_IO_EN);                  // DO2
 	io_pin2out(&PORTC, 0, OUT_IO_DIGITAL, IN_EN_IO_EN);                  // DO1

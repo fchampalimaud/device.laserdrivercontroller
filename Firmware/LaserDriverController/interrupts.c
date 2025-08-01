@@ -13,6 +13,7 @@ extern AppRegs app_regs;
 /* Interrupts from Timers                                               */
 /************************************************************************/
 // ISR(TCC0_OVF_vect, ISR_NAKED)
+
 // ISR(TCD0_OVF_vect, ISR_NAKED)
 // ISR(TCE0_OVF_vect, ISR_NAKED)
 // ISR(TCF0_OVF_vect, ISR_NAKED)
@@ -50,7 +51,7 @@ ISR(PORTH_INT0_vect, ISR_NAKED)
 	}*/
 	
 	
-	app_regs.REG_RESERVED2 = 1;
+	app_regs.REG_RESERVED2 = 2;
 
 	reti();
 }
@@ -61,7 +62,7 @@ ISR(PORTH_INT0_vect, ISR_NAKED)
 //ONLY IF PHYSICAL SWITCH IS CONNECTED
 ISR(PORTE_INT0_vect, ISR_NAKED)
 {
-	app_regs.REG_RESERVED1 = 1; 
+	app_regs.REG_RESERVED1 = 2; 
 	
 	
 	/*uint8_t reg_spad_switch = app_regs.REG_SPAD_SWITCH;

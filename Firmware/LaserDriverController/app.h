@@ -12,24 +12,12 @@
 /************************************************************************/
 /* User prototypes                                                      */
 /************************************************************************/
-void init_calibration_values(void);
+//void init_calibration_values(void);
 
 
 /************************************************************************/
 /* Initialize the application                                           */
 /************************************************************************/
 void hwbp_app_initialize(void);
-/*
-void write_values_on_reg();
-void request_temperature(uint8_t unit_id);
-void request_gas(uint8_t unit_id);
-void request_baud_rate(uint8_t unit_id);
-void send_baud_rate(uint16_t baud_rate_value);
-void request_version_n(uint8_t unit_id);
-void request_serial_n(uint8_t unit_id);
-void request_full_scale_flow(uint8_t unit_id);
 
-void send_setpoint(float set_value);
-void request_setpoint(uint8_t unit_id);*/
-void clear_set_re_de();
 #endif /* _APP_H_ */

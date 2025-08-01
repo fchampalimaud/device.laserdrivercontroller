@@ -193,7 +193,7 @@ void core_callback_initialize_hardware(void)
 	set_RESET;
 	_delay_ms(1);
 	clr_RESET;*/
-	_delay_ms(1);
+	//_delay_ms(1);
 	/* Initialize hardware */
 	update_digipot(0, &SPID, &PORTD, 4, &PORTD);
 }
@@ -205,14 +205,15 @@ void core_callback_1st_config_hw_after_boot(void)
 	
 	/* Initialize hardware */
 	/* Initialize SPI with 4MHz */
-	SPIE_CTRL = SPI_MASTER_bm | SPI_ENABLE_bm | SPI_MODE_0_gc | SPI_CLK2X_bm | SPI_PRESCALER_DIV16_gc;
+	//SPIE_CTRL = SPI_MASTER_bm | SPI_ENABLE_bm | SPI_MODE_0_gc | SPI_CLK2X_bm | SPI_PRESCALER_DIV16_gc;
+   	SPID_CTRL = SPI_MASTER_bm | SPI_ENABLE_bm | SPI_MODE_0_gc | SPI_CLK2X_bm | SPI_PRESCALER_DIV16_gc;
 	
 	/*// Reset ADC 
 	_delay_ms(100);
 	set_RESET;
 	_delay_ms(1);
 	clr_RESET;*/
-	_delay_ms(1);
+	//_delay_ms(1);
 	update_digipot(0, &SPID, &PORTD, 4, &PORTD);
 }
 
@@ -472,7 +473,7 @@ void core_callback_t_500us(void) {
 void core_callback_t_1ms(void) {
 	
 	//spad switch event from interrupt
-	if (app_regs.REG_RESERVED1-- == 0){
+	if (app_regs.REG_RESERVED1 == 2){
 		uint8_t reg_spad_switch = app_regs.REG_SPAD_SWITCH;
 		if(read_SWITCH_5V){
 			if(app_regs.REG_EVNT_ENABLE &  B_EVT_SPAD_SWITCH ){
@@ -492,11 +493,12 @@ void core_callback_t_1ms(void) {
 				}
 			}
 		}
+		app_regs.REG_RESERVED1 = 0;
 		
 	}
 	
 	//key switch event from interrupt
-	if (app_regs.REG_RESERVED2-- == 0){
+	if (app_regs.REG_RESERVED2 == 2){
 		uint8_t reg_laser_state = app_regs.REG_LASER_STATE;
 		if(read_ON_OFF_KEY){
 			if(app_regs.REG_EVNT_ENABLE & B_EVT_LASER_STATE ){
@@ -514,6 +516,7 @@ void core_callback_t_1ms(void) {
 				}
 			}
 		}
+		app_regs.REG_RESERVED2 =0;
 	}
 	
 }

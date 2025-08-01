@@ -10,7 +10,7 @@ void init_ios(void);
 /* Definition of input pins                                             */
 /************************************************************************/
 // ON_OFF_KEY             Description: Flag Laser ON or OFF
-// SWITCH_5V              Description: Switch intput
+// SWITCH_5V              Description: Switch input
 
 #define read_ON_OFF_KEY read_io(PORTH, 0)       // ON_OFF_KEY
 #define read_SWITCH_5V read_io(PORTE, 0)        // SWITCH_5V
