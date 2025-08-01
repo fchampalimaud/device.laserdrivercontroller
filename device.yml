@@ -8,18 +8,18 @@ hardwareTargets: "1.0"
 registers:
   SpadSwitch:
     address: 32
-    access: Event
+    access: [Event, Write]
     type: U8
     description: Turns ON/OFF the relay to switch SPADs supply
   LaserState:
     address: 33
-    access: Event
+    access: [Event, Write]
     type: U8
     description: State of the laser, ON/OFF  
   Reserved0: &reserved
     address: 34
     type: U8
-    access: Read
+    access: Write
     description: Reserved for future use
     visibility: private
   Reserved1: 
@@ -66,94 +66,94 @@ registers:
     <<: *output
     address: 43
     description: Write the state of all digital output lines
-  BNCsState:
+  BncsState:
     address: 44
     type: U8
     access: Write
-    maskType: BNCmaks
+    maskType: Bncs
     description: Configure BNCs to start
   SignalState:
     address: 45
     type: U8
     access: Write
-    maskType: Signalmask
+    maskType: Signals
     description: Configure Signals to start
-  BNC0_ON:
+  Bnc1On:
     address: 46
     type: U16
     access: Write
     description: Time ON of BNC1 (milliseconds) [1:65535]
-  BNC0_OFF:
+  Bnc1Off:
     address: 47
     type: U16
     access: Write
     description: Time OFF of BNC1 (milliseconds) [1:65535]
-  BNC0_Pulses:
+  Bnc1Pulses:
     address: 48
     type: U16
     access: Write
     description: Number of pulses (BNC1) [0;65535], 0-> infinite repeat
-  BNC0_Tail:
+  Bnc1Tail:
     address: 49
     type: U16
     access: Write
     description: Wait time to start (milliseconds) (BNC1) [1;65535]
-  BNC1_ON:
+  Bnc2On:
     address: 50
     type: U16
     access: Write
     description: Time ON of BNC2 (milliseconds) [1:65535]
-  BNC1_OFF:
+  Bnc2Off:
     address: 51
     type: U16
     access: Write
     description: Time OFF of BNC2 (milliseconds) [1:65535]
-  BNC1_Pulses:
+  Bnc2Pulses:
     address: 52
     type: U16
     access: Write
     description: Number of pulses (BNC2) [0;65535], 0-> infinite repeat
-  BNC1_Tail:
+  Bnc2Tail:
     address: 53
     type: U16
     access: Write
     description: Wait time to start (milliseconds) (BNC2) [1;65535]
-  SignalA_ON:
+  SignalAOn:
     address: 54
     type: U16
     access: Write
     description: Time ON of SignalA (milliseconds) [1:65535]
-  SignalA_OFF:
+  SignalAOff:
     address: 55
     type: U16
     access: Write
     description: Time OFF of SignalA (milliseconds) [1:65535]
-  SignalA_Pulses:
+  SignalAPulses:
     address: 56
     type: U16
     access: Write
     description: Number of pulses (SignalA) [0;65535], 0-> infinite repeat
-  SignalA_Tail:
+  SignalATail:
     address: 57
     type: U16
     access: Write
     description: Wait time to start (milliseconds) (SignalA) [1;65535]
-  SignalB_ON:
+  SignalBOn:
     address: 58
     type: U16
     access: Write
     description: Time ON of SignalB (milliseconds) [1:65535]
-  SignalB_OFF:
+  SignalBOff:
     address: 59
     type: U16
     access: Write
     description: Time OFF of SignalB (milliseconds) [1:65535]
-  SignalB_Pulses:
+  SignalBPulses:
     address: 60
     type: U16
     access: Write
     description: Number of pulses (SignalB) [0;65535], 0-> infinite repeat
-  SignalB_Tail:
+  SignalBTail:
     address: 61
     type: U16
     access: Write
@@ -162,37 +162,40 @@ registers:
     address: 62
     type: U8
     access: Write
-    maskType: Events
+    maskType: LaserDriverControllerEvents
     description: Specifies the active events in the device
 
 
 bitMasks:
+  DigitalOutputs:
+    description: Specifies the state of port digital output lines.
+    bits:
+      DO1: 0x1
+      DO2: 0x2
+  Bncs:
+    description: Specifies the state of BNCs
+    bits:
+      Bnc1: 0x1
+      Bnc2: 0x2
+  Signals:
+    description: Specifies the state of Signals
+    bits:
+      SignalA: 0x1
+      SignalB: 0x2
+  Events:
+    description: Specifies the active events in the device
+    bits:
+      EventSpadSwitch: 0x1
+      EventLaserState: 0x2
+groupMasks:
   FrequencySelect:
     description: Selects laser frequency mode
-    bits:
+    values:
+      None: 0
       F1: 0x1
       F2: 0x2
       F3: 0x4
       CW: 0x8
-  DigitalOutputs:
-    description: Specifies the state of port digital output lines.
-    bits:
-      DOUT1: 0x1
-      DOUT2: 0x2
-  BNCmaks:
-    description: Specifies the state of BNCs
-    bits:
-      BNC0: 0x1
-      BNC1: 0x2
-  Signalmask:
-    description: Specifies the state of Signals
-    bits:
-      Signal_A: 0x1
-      Signal_B: 0x2
-  Events:
-    description: Specifies the active events in the device
-    bits:
-      EVT_SPAD_SWITCH: 0x1
-      EVT_LASER_STATE: 0x2
+
 
   
