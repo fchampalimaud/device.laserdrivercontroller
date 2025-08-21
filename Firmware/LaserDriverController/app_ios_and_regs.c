@@ -16,8 +16,8 @@ void init_ios(void)
 	io_set_int(&PORTE, INT_LEVEL_LOW, 0, (1<<0), false);                 // SWITCH_5V
 
 	/* Configure output pins */
-	io_pin2out(&PORTC, 2, OUT_IO_DIGITAL, IN_EN_IO_EN);                  // DO2
 	io_pin2out(&PORTC, 0, OUT_IO_DIGITAL, IN_EN_IO_EN);                  // DO1
+	io_pin2out(&PORTC, 2, OUT_IO_DIGITAL, IN_EN_IO_EN);                  // DO2
 	io_pin2out(&PORTD, 1, OUT_IO_DIGITAL, IN_EN_IO_EN);                  // MCU_TO_RELAY
 	io_pin2out(&PORTD, 4, OUT_IO_DIGITAL, IN_EN_IO_DIS);                 // POT_CS
 	io_pin2out(&PORTD, 5, OUT_IO_DIGITAL, IN_EN_IO_DIS);                 // POT_SDI

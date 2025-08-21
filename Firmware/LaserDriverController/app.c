@@ -473,6 +473,7 @@ void core_callback_t_500us(void) {
 void core_callback_t_1ms(void) {
 	
 	//spad switch event from interrupt
+	
 	if (app_regs.REG_RESERVED1 == 2){
 		uint8_t reg_spad_switch = app_regs.REG_SPAD_SWITCH;
 		if(read_SWITCH_5V){
