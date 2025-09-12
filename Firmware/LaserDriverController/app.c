@@ -193,7 +193,7 @@ void core_callback_initialize_hardware(void)
 	set_RESET;
 	_delay_ms(1);
 	clr_RESET;*/
-	//_delay_ms(1);
+	_delay_ms(10);
 	/* Initialize hardware */
 	update_digipot(0, &SPID, &PORTD, 4, &PORTD);
 }
@@ -213,7 +213,7 @@ void core_callback_1st_config_hw_after_boot(void)
 	set_RESET;
 	_delay_ms(1);
 	clr_RESET;*/
-	//_delay_ms(1);
+	_delay_ms(10);
 	update_digipot(0, &SPID, &PORTD, 4, &PORTD);
 }
 
