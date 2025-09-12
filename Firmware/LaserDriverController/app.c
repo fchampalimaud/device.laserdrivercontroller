@@ -280,7 +280,21 @@ void core_callback_visualen_to_off(void)
 /************************************************************************/
 /* Callbacks: Change on the operation mode                              */
 /************************************************************************/
-void core_callback_device_to_standby(void) {}
+void core_callback_device_to_standby(void) {
+	
+	app_regs.REG_BNCS_STATE = 0;
+	app_write_REG_BNCS_STATE(&app_regs.REG_BNCS_STATE);
+	
+	app_regs.REG_SIGNAL_STATE = 0;
+	app_write_REG_SIGNAL_STATE(&app_regs.REG_SIGNAL_STATE);
+	
+	app_regs.REG_LASER_INTENSITY = 0;
+	app_write_REG_LASER_INTENSITY(&app_regs.REG_LASER_INTENSITY);
+	
+	app_write_REG_SPAD_SWITCH(0);	
+	
+	
+}
 void core_callback_device_to_active(void) {}
 void core_callback_device_to_enchanced_active(void) {}
 void core_callback_device_to_speed(void) {}
