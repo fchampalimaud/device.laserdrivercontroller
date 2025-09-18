@@ -164,8 +164,6 @@ registers:
     access: Write
     maskType: LaserDriverControllerEvents
     description: Specifies the active events in the device
-
-
 bitMasks:
   DigitalOutputs:
     description: Specifies the state of port digital output lines.
@@ -182,7 +180,7 @@ bitMasks:
     bits:
       SignalA: 0x1
       SignalB: 0x2
-  Events:
+  LaserDriverControllerEvents:
     description: Specifies the active events in the device
     bits:
       EventSpadSwitch: 0x1
@@ -196,6 +194,3 @@ groupMasks:
       F2: 0x2
       F3: 0x4
       CW: 0x8
-
-
-  
